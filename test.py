@@ -12,7 +12,7 @@ logger.addHandler(stream_handler)
 class LampdaTestCase(unittest.TestCase):
 
     def test_list_foods(self):
-        event = {}
+        event = {"route": "/foods"}
         print(lambda_function.lambda_handler(event, None))
 
 
