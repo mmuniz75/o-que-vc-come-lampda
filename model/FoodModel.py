@@ -27,7 +27,7 @@ class FoodModel(db.Model):
 
     @classmethod
     def find_foods(cls):
-        return cls.query.order_by(unaccent(FoodModel.name)).all()
+        return db.session.query(FoodModel).order_by(unaccent(FoodModel.name)).all()
 
     def save_food(self):
         db.session.add(self)

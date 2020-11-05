@@ -1,11 +1,11 @@
 from model.BrandFoodModel import BrandFoodModel
 from model.BrandFoodChemicalModel import BrandFoodChemicalModel
-from flask import jsonify
 from sqlalchemy.exc import IntegrityError
 from sql_alchemy import db
 
 import logging
 import barcodenumber
+import json
 
 from services.BrandFoodChemicalService import BrandFoodChemicalService
 
@@ -51,7 +51,7 @@ class BrandFoodService:
         chemical_list = [chemical.chemical_name() for chemical in chemicals]
 
         chemicals = {"bar_code": relation.bar_code, "chemicals": chemical_list}
-        return jsonify(chemicals)
+        return json.dumps(chemicals)
 
     @staticmethod
     def get_all():

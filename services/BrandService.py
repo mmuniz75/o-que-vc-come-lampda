@@ -1,4 +1,4 @@
-from flask import jsonify
+import json
 
 from model.BrandModel import BrandModel
 from model.BrandFoodModel import BrandFoodModel
@@ -18,7 +18,7 @@ class BrandService:
         if len(foods.all()) == 0:
             return {"message": "Não existe alimentos para marca {}".format(brand_id)}, 404
         list = [food.food() for food in foods]
-        return jsonify(list)
+        return json.dumps(list)
 
     @staticmethod
     def get_brands():

@@ -1,4 +1,3 @@
-from flask import jsonify
 from model.ChemicalModel import ChemicalModel
 from sql_alchemy import db
 from sqlalchemy.exc import IntegrityError
