@@ -1,11 +1,9 @@
 from model.BrandFoodModel import BrandFoodModel
 from model.BrandFoodChemicalModel import BrandFoodChemicalModel
 from sqlalchemy.exc import IntegrityError
-from sql_alchemy import db
 
 import logging
 import barcodenumber
-import json
 
 from services.BrandFoodChemicalService import BrandFoodChemicalService
 

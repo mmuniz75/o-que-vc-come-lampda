@@ -15,6 +15,13 @@ class LampdaTestCase(unittest.TestCase):
         event = {"route": "/foods"}
         print(lambda_function.lambda_handler(event, None))
 
+    def test_add_food(self):
+        event = {
+                    "route": "/foods",
+                    "name": "nova comida"
+                }
+        print(lambda_function.lambda_handler(event, None))
+
     def test_list_brands(self):
         event = {"route": "/brands"}
         print(lambda_function.lambda_handler(event, None))
@@ -36,6 +43,13 @@ class LampdaTestCase(unittest.TestCase):
             "food_id": 5,
             "brand_id": 17
         }
+        print(lambda_function.lambda_handler(event, None))
+
+    def test_get_barcode(self):
+        event = {
+                    "route": "/brands/foods/<string:bar_code>",
+                    "bar_code": "7896034300789"
+                }
         print(lambda_function.lambda_handler(event, None))
 
 if __name__ == '__main__':
