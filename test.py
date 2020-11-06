@@ -26,6 +26,13 @@ class LampdaTestCase(unittest.TestCase):
         event = {"route": "/brands"}
         print(lambda_function.lambda_handler(event, None))
 
+    def test_add_brand(self):
+        event = {
+            "route": "/brands",
+            "name": "nova marca"
+        }
+        print(lambda_function.lambda_handler(event, None))
+
     def test_list_chemicals(self):
         event = {"route": "/chemicals"}
         print(lambda_function.lambda_handler(event, None))

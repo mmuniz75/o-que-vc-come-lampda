@@ -16,7 +16,8 @@ def lambda_handler(event, context):
         name = event['name'] if 'name' in event else None
         return foods(name)
     elif route == '/brands':
-        return brands()
+        name = event['name'] if 'name' in event else None
+        return brands(name)
     elif route == '/chemicals':
         return chemicals()
     elif route == '/foods/<int:food_id>/brands':
@@ -46,8 +47,11 @@ def chemicals_by_brand_food(brand_id, food_id):
     return convert_json(BrandFoodService.get_chemicals(brand_id, food_id))
 
 
-def brands():
-    return convert_json(BrandService.get_brands())
+def brands(name):
+    if name is None:
+        return convert_json(BrandService.get_brands())
+    else:
+        return BrandService.create_brand(name)
 
 
 def chemicals():
