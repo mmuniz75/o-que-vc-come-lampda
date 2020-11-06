@@ -29,7 +29,7 @@ class BrandFoodChemicalModel(db.Model):
 
     @classmethod
     def find_by_brand_food(cls, brand_id, food_id):
-        return cls.query.filter_by(id_brand=brand_id, id_food=food_id).order_by(unaccent(text("name")))
+        return db.session.query(BrandFoodChemicalModel).filter_by(id_brand=brand_id, id_food=food_id).order_by(unaccent(text("name")))
 
     @classmethod
     def find_by_id(cls, brand_id, food_id, chemical_id):

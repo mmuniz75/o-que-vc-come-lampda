@@ -1,6 +1,6 @@
 import json
 
-
+from model.BrandFoodModel import BrandFoodModel
 from model.FoodModel import FoodModel
 
 import logging
@@ -12,13 +12,13 @@ ALIMENTO_CADASTRADO = "Alimento já cadastrado"
 
 class FoodService:
 
-    # @staticmethod
-    # def get_brands(food_id):
-    #     brands = BrandFoodModel.find_by_food(food_id)
-    #     if len(brands.all()) == 0:
-    #         return {"message": "Não existem marcas para esse alimento"}, 404
-    #     list = [brand.brand() for brand in brands]
-    #     return json.dumps(list)
+    @staticmethod
+    def get_brands(food_id):
+        brands = BrandFoodModel.find_by_food(food_id)
+        if len(brands.all()) == 0:
+            return {"message": "Não existem marcas para esse alimento"}, 404
+        list = [brand.brand() for brand in brands]
+        return list
 
     @staticmethod
     def get_foods():

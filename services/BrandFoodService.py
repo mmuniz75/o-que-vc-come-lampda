@@ -51,7 +51,7 @@ class BrandFoodService:
         chemical_list = [chemical.chemical_name() for chemical in chemicals]
 
         chemicals = {"bar_code": relation.bar_code, "chemicals": chemical_list}
-        return json.dumps(chemicals)
+        return chemicals
 
     @staticmethod
     def get_all():
