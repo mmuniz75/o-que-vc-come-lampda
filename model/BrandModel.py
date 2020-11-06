@@ -27,7 +27,7 @@ class BrandModel(db.Model):
 
     @classmethod
     def find_brands(cls):
-        return cls.query.order_by(unaccent(BrandModel.name)).all()
+        return db.session.query(BrandModel).order_by(unaccent(BrandModel.name)).all()
 
     def save_brand(self):
         db.session.add(self)

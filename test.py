@@ -16,6 +16,10 @@ class LampdaTestCase(unittest.TestCase):
         print(lambda_function.lambda_handler(event, None))
 
     def test_list_brands(self):
+        event = {"route": "/brands"}
+        print(lambda_function.lambda_handler(event, None))
+
+    def test_list_brands_food(self):
         event = {
                     "route": "/foods/<int:food_id>/brands",
                     "food_id": 5
