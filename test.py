@@ -19,6 +19,10 @@ class LampdaTestCase(unittest.TestCase):
         event = {"route": "/brands"}
         print(lambda_function.lambda_handler(event, None))
 
+    def test_list_chemicals(self):
+        event = {"route": "/chemicals"}
+        print(lambda_function.lambda_handler(event, None))
+
     def test_list_brands_food(self):
         event = {
                     "route": "/foods/<int:food_id>/brands",
@@ -26,7 +30,7 @@ class LampdaTestCase(unittest.TestCase):
                 }
         print(lambda_function.lambda_handler(event, None))
 
-    def test_list_foods_checmicals(self):
+    def test_list_foods_chemicals(self):
         event = {
             "route": "/brands/<int:brand_id>/foods/<int:food_id>/chemicals",
             "food_id": 5,

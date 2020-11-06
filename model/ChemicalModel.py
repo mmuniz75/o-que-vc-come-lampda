@@ -26,7 +26,7 @@ class ChemicalModel(db.Model):
 
     @classmethod
     def find_chemicals(cls):
-        return cls.query.filter(ChemicalModel.name != 'Nenhum').order_by(unaccent(ChemicalModel.name)).all()
+        return db.session.query(ChemicalModel).filter(ChemicalModel.name != 'Nenhum').order_by(unaccent(ChemicalModel.name)).all()
 
     def save_chemical(self):
         db.session.add(self)
