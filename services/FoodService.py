@@ -1,5 +1,3 @@
-import json
-
 from model.BrandFoodModel import BrandFoodModel
 from model.FoodModel import FoodModel
 
@@ -16,7 +14,7 @@ class FoodService:
     def get_brands(food_id):
         brands = BrandFoodModel.find_by_food(food_id)
         if len(brands.all()) == 0:
-            return {"message": "Não existem marcas para esse alimento"}, 404
+            return {"statusCode": 404, "message": "Não existem marcas para esse alimento"}
         list = [brand.brand() for brand in brands]
         return list
 
@@ -30,28 +28,28 @@ class FoodService:
         food = FoodModel(name)
         try:
             if FoodModel.find_by_name(name):
-                return {"message": ALIMENTO_CADASTRADO}, 409
+                return {"statusCode": 409, "message": ALIMENTO_CADASTRADO}
 
             food.save_food()
 
         except Exception as e:
             logger.error(e, exc_info=True)
-            return {"message": "Error ao salvar alimento"}, 500
-        return food.json(), 201
+            return {"statusCode": 500, "message": "Error ao salvar alimento"}
+        return food.json()
 
     @staticmethod
     def update_food(food_id, name):
         food = FoodModel.find_food(food_id)
         if not food:
-            return {"message": "Não existe alimento com id {}".format(food_id)}, 404
+            return {"statusCode": 404, "message": "Não existe alimento com id {}".format(food_id)}
 
         try:
             if FoodModel.find_by_name(name):
-                return {"message": ALIMENTO_CADASTRADO}, 409
+                return {"statusCode": 404, "message": ALIMENTO_CADASTRADO}
 
             food.update_food(name)
 
         except Exception as e:
             logger.error(e, exc_info=True)
-            return {"message": "Error ao alterar alimento"}, 500
-        return food.json(), 200
+            return {"statusCode": 500, "message": "Error ao alterar alimento"}
+        return food.json()

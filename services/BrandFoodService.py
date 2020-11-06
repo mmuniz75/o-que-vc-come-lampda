@@ -61,14 +61,14 @@ class BrandFoodService:
     def create(brand_id, food_id, bar_code, chemicals):
 
         if not chemicals or len(chemicals) == 0:
-            return {"message": "Quimicos não informados"}, 400
+            return {"statusCode": 400, "message": "Quimicos não informados"}
 
         if not barcodenumber.check_code_ean13(bar_code):
-            return {"message": "Codigo de barras invalido"}, 412
+            return {"statusCode": 412, "message": "Codigo de barras invalido"}
 
         relation = BrandFoodModel.find_by_bar_code(bar_code)
         if relation:
-            return {"message": "Codigo de barras já cadastrado"}, 409
+            return {"statusCode": 409, "message": "Codigo de barras já cadastrado"}
 
         relation = BrandFoodModel(brand_id, food_id, bar_code)
         try:
@@ -81,22 +81,22 @@ class BrandFoodService:
 
         except IntegrityError:
             db.session.rollback()
-            return {"message": "Item já cadastrado"}, 409
+            return {"statusCode": 409, "message": "Item já cadastrado"}
         except Exception as e:
             db.session.rollback()
             logger.error(e, exc_info=True)
-            return {"message": "Error ao salvar relacionamento"}, 500
-        return relation.json(), 201
+            return {"statusCode": 500, "message": "Error ao salvar relacionamento"}
+        return relation.json()
 
     @staticmethod
     def delete(brand_id, food_id):
         try:
             relation = BrandFoodModel.find_by_id(brand_id, food_id)
             if not relation:
-                return {"message": "Relacionamento não cadastrado"}, 404
+                return {"statusCode": 404, "message": "Relacionamento não cadastrado"}
 
             relation.delete()
         except Exception as e:
             logger.error(e, exc_info=True)
-            return {"message": "Error ao remover relacionamento"}, 500
-        return {}, 204
+            return {"statusCode": 500, "message": "Error ao remover relacionamento"}
+        return {}

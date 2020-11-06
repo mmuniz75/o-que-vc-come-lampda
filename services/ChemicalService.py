@@ -26,12 +26,12 @@ class ChemicalService:
 
         except IntegrityError as err:
             db.session.rollback()
-            return {"message": "Quimico {} já cadastrado".format(ChemicalService.get_field_name(err.orig.args[0]))}, 409
+            return {"statusCode": 409, "message": "Quimico {} já cadastrado".format(ChemicalService.get_field_name(err.orig.args[0]))}
         except Exception as e:
             db.session.rollback()
             logger.error(e, exc_info=True)
-            return {"message": "Error ao salvar quimico"}, 500
-        return {"message": "Quimicos adicionados"}, 201
+            return {"statusCode": 500, "message": "Error ao salvar quimico"}
+        return {"message": "Quimicos adicionados"}
 
     @staticmethod
     def get_field_name(erro):
@@ -42,13 +42,13 @@ class ChemicalService:
     def update_chemical(chemical_id, name):
         chemical = ChemicalModel.find_chemical(chemical_id)
         if not chemical:
-            return {"message": "Não existe quimico com id {}".format(chemical_id)}, 404
+            return {"statusCode": 404, "message": "Não existe quimico com id {}".format(chemical_id)}
 
         try:
             chemical.update_chemical(name)
         except IntegrityError:
-            return {"message": "Quimico já cadastrado"}, 409
+            return {"statusCode": 409, "message": "Quimico já cadastrado"}
         except Exception as e:
             logger.error(e, exc_info=True)
-            return {"message": "Error ao alterar quimico"}, 500
+            return {"statusCode": 500, "message": "Error ao alterar quimico"}
         return chemical.json(), 200
