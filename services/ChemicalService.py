@@ -22,13 +22,13 @@ class ChemicalService:
                 chemicalModel = ChemicalModel(chemical['name'], chemical['url'])
                 chemicalModel.save_chemical()
 
-            session.commit()
+            db.session.commit()
 
         except IntegrityError as err:
-            session.rollback()
+            db.session.rollback()
             return {"message": "Quimico {} já cadastrado".format(ChemicalService.get_field_name(err.orig.args[0]))}, 409
         except Exception as e:
-            session.rollback()
+            db.session.rollback()
             logger.error(e, exc_info=True)
             return {"message": "Error ao salvar quimico"}, 500
         return {"message": "Quimicos adicionados"}, 201

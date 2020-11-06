@@ -59,5 +59,15 @@ class LampdaTestCase(unittest.TestCase):
                 }
         print(lambda_function.lambda_handler(event, None))
 
+    def test_add_brand_food(self):
+        event = {
+                    "route": "/brands/<int:brand_id>/foods/<int:food_id>",
+                    "bar_code": "7097498413194",
+                    "food_id": 29,
+                    "brand_id": 31,
+                    "chemicals": [179, 178]
+                }
+        print(lambda_function.lambda_handler(event, None))
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,6 +1,7 @@
 from model.BrandFoodModel import BrandFoodModel
 from model.BrandFoodChemicalModel import BrandFoodChemicalModel
 from sqlalchemy.exc import IntegrityError
+from sql_alchemy import db
 
 import logging
 import barcodenumber
@@ -76,13 +77,13 @@ class BrandFoodService:
             for chemical in chemicals:
                 BrandFoodChemicalService.create(brand_id, food_id, chemical)
 
-            session.commit()
+            db.session.commit()
 
         except IntegrityError:
-            session.rollback()
+            db.session.rollback()
             return {"message": "Item já cadastrado"}, 409
         except Exception as e:
-            session.rollback()
+            db.session.rollback()
             logger.error(e, exc_info=True)
             return {"message": "Error ao salvar relacionamento"}, 500
         return relation.json(), 201

@@ -30,6 +30,12 @@ def lambda_handler(event, context):
     elif route == '/brands/foods/<string:bar_code>':
         bar_code = event['bar_code']
         return brand_food_bar_code(bar_code)
+    elif route == '/brands/<int:brand_id>/foods/<int:food_id>':
+        bar_code = event['bar_code']
+        food_id = event['food_id']
+        brand_id = event['brand_id']
+        _chemicals = event['chemicals']
+        return brand_food_create(brand_id, food_id, bar_code, _chemicals)
 
 
 def foods(name):
@@ -60,6 +66,10 @@ def chemicals():
 
 def brand_food_bar_code(bar_code):
     return BrandFoodService.get_foods_brand_by_barcode(bar_code)
+
+
+def brand_food_create(brand_id, food_id, bar_code, chemicals):
+    return BrandFoodService.create(brand_id, food_id, bar_code, chemicals)
 
 
 def convert_json(obj):
