@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.functions import ReturnTypeFromArgs
 from sqlalchemy import Column, ForeignKey, Integer, String
@@ -18,6 +17,7 @@ class lower(ReturnTypeFromArgs):
 db_conn = os.environ.get('DB_CONN')
 engine = create_engine(db_conn, echo=True)
 Session = sessionmaker(bind=engine)
+
 
 class db:
     session = Session()

@@ -1,9 +1,9 @@
 from sql_alchemy import db, unaccent, lower
 
 
-class FoodModel(db.Model):
+class BrandModel(db.Model):
 
-    __tablename__ = 'food'
+    __tablename__ = 'brand'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
@@ -18,26 +18,26 @@ class FoodModel(db.Model):
         }
 
     @classmethod
-    def find_food(cls, food_id):
-        return db.session.query(FoodModel).filter_by(id=food_id).first()
+    def find_brand(cls, brand_id):
+        return cls.query.filter_by(id=brand_id).first()
 
     @classmethod
     def find_by_name(cls, name):
-        return db.session.query(FoodModel).filter(lower(unaccent(FoodModel.name)) == lower(unaccent(name))).first()
+        return db.session.query(BrandModel).filter(lower(unaccent(BrandModel.name)) == lower(unaccent(name))).first()
 
     @classmethod
-    def find_foods(cls):
-        return db.session.query(FoodModel).order_by(unaccent(FoodModel.name)).all()
+    def find_brands(cls):
+        return cls.query.order_by(unaccent(BrandModel.name)).all()
 
-    def save_food(self):
+    def save_brand(self):
         db.session.add(self)
         db.session.commit()
 
-    def update_food(self, name):
+    def update_brand(self, name):
         self.name = name
         db.session.add(self)
         db.session.commit()
 
-    def delete_food(self):
+    def delete_brand(self):
         db.session.delete(self)
         db.session.commit()

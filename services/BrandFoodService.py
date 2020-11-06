@@ -78,13 +78,13 @@ class BrandFoodService:
             for chemical in chemicals:
                 BrandFoodChemicalService.create(brand_id, food_id, chemical)
 
-            db.session.commit()
+            session.commit()
 
         except IntegrityError:
-            db.session.rollback()
+            session.rollback()
             return {"message": "Item já cadastrado"}, 409
         except Exception as e:
-            db.session.rollback()
+            session.rollback()
             logger.error(e, exc_info=True)
             return {"message": "Error ao salvar relacionamento"}, 500
         return relation.json(), 201
