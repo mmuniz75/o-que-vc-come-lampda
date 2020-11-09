@@ -42,35 +42,35 @@ def foods(name):
     if name is None:
         return FoodService.get_foods()
     else:
-        return convert_json(FoodService.create_food(name))
+        return FoodService.create_food(name)
 
 
 def brands_by_food(food_id):
-    return convert_json(FoodService.get_brands(food_id))
+    return FoodService.get_brands(food_id)
 
 
 def chemicals_by_brand_food(brand_id, food_id):
-    return convert_json(BrandFoodService.get_chemicals(brand_id, food_id))
+    return BrandFoodService.get_chemicals(brand_id, food_id)
 
 
 def brands(name):
     if name is None:
-        return convert_json(BrandService.get_brands())
+        return BrandService.get_brands()
     else:
-        return convert_json(BrandService.create_brand(name))
+        return BrandService.create_brand(name)
 
 
 def chemicals():
-    return convert_json(ChemicalService.get_chemicals())
+    return ChemicalService.get_chemicals()
 
 
 def brand_food_bar_code(bar_code):
-    return convert_json(BrandFoodService.get_foods_brand_by_barcode(bar_code))
+    return BrandFoodService.get_foods_brand_by_barcode(bar_code)
 
 
 def brand_food_create(brand_id, food_id, bar_code, chemicals):
-    return convert_json(BrandFoodService.create(brand_id, food_id, bar_code, chemicals))
+    return BrandFoodService.create(brand_id, food_id, bar_code, chemicals)
 
 
-def convert_json(obj):
+def _convert_json(obj):
     return json.dumps(obj, ensure_ascii=False).encode('utf8').decode()
