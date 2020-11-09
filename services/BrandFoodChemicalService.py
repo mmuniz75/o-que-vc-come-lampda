@@ -21,10 +21,10 @@ class BrandFoodChemicalService:
             relation.save()
 
         except IntegrityError:
-            return {"statusCode": 409, "message": "Item já cadastrado"}
+            raise Exception({"statusCode": 409, "message": "Item já cadastrado"})
         except Exception as e:
             logger.error(e, exc_info=True)
-            return {"statusCode": 500, "message": "Error ao salvar relacionamento"}
+            raise Exception({"statusCode": 500, "message": "Error ao salvar relacionamento"})
         return relation.json()
 
     @staticmethod
@@ -32,10 +32,10 @@ class BrandFoodChemicalService:
         try:
             relation = BrandFoodChemicalModel.find_by_id(brand_id, food_id, chemical_id)
             if not relation:
-                return {"statusCode": 404, "message": "Relacionamento não cadastrado"}
+                raise Exception({"statusCode": 404, "message": "Relacionamento não cadastrado"})
 
             relation.delete()
         except Exception as e:
             logger.error(e, exc_info=True)
-            return {"statusCode": 500, "message": "Error ao remover relacionamento"}
+            raise Exception({"statusCode": 500, "message": "Error ao remover relacionamento"})
         return {}

@@ -14,7 +14,7 @@ class FoodService:
     def get_brands(food_id):
         brands = BrandFoodModel.find_by_food(food_id)
         if len(brands.all()) == 0:
-            return {"statusCode": 404, "message": "Não existem marcas para esse alimento"}
+            raise Exception({"statusCode": 404, "message": "Não existem marcas para esse alimento"})
         list = [brand.brand() for brand in brands]
         return list
 
@@ -26,30 +26,30 @@ class FoodService:
     @staticmethod
     def create_food(name):
         food = FoodModel(name)
-        try:
-            if FoodModel.find_by_name(name):
-                return {"statusCode": 409, "message": ALIMENTO_CADASTRADO}
 
+        if FoodModel.find_by_name(name):
+            raise Exception({"statusCode": 409, "message": ALIMENTO_CADASTRADO})
+
+        try:
             food.save_food()
 
         except Exception as e:
             logger.error(e, exc_info=True)
-            return {"statusCode": 500, "message": "Error ao salvar alimento"}
+            raise Exception({"statusCode": 500, "message": "Error ao salvar alimento"})
         return food.json()
 
     @staticmethod
     def update_food(food_id, name):
         food = FoodModel.find_food(food_id)
         if not food:
-            return {"statusCode": 404, "message": "Não existe alimento com id {}".format(food_id)}
+            raise Exception({"statusCode": 404, "message": "Não existe alimento com id {}".format(food_id)})
 
+        if FoodModel.find_by_name(name):
+            raise Exception({"statusCode": 404, "message": ALIMENTO_CADASTRADO})
         try:
-            if FoodModel.find_by_name(name):
-                return {"statusCode": 404, "message": ALIMENTO_CADASTRADO}
-
             food.update_food(name)
 
         except Exception as e:
             logger.error(e, exc_info=True)
-            return {"statusCode": 500, "message": "Error ao alterar alimento"}
+            raise Exception( {"statusCode": 500, "message": "Error ao alterar alimento"})
         return food.json()

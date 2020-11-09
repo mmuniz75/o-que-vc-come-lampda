@@ -16,22 +16,22 @@ class BrandFoodService:
     @staticmethod
     def get_foods_brand_by_barcode(bar_code):
         if not barcodenumber.check_code_ean13(bar_code):
-            return {"message": "Codigo de barras invalido"}, 412
+            raise Exception({"statusCode": 412, "message": "Codigo de barras invalido"})
 
         relation = BrandFoodModel.find_by_bar_code(bar_code)
         if not relation:
-            return {"message": "Codigo de barra não encontrado"}, 404
+            raise Exception({"statusCode": 404, "message": "Codigo de barra não encontrado"})
 
         return relation.json();
 
     @staticmethod
     def get_chemicals_by_barcode(bar_code):
         if not barcodenumber.check_code_ean13(bar_code):
-            return {"message": "Codigo de barras invalido"}, 412
+            raise Exception({"statusCode": 412, "message": "Codigo de barras invalido"})
 
         relation = BrandFoodModel.find_by_bar_code(bar_code)
         if not relation:
-            return {"message": "Codigo de barra não encontrado"}, 404
+            raise Exception({"statusCode": 404, "message": "Codigo de barra não encontrado"})
 
         return BrandFoodService.get_chemicals(relation.id_brand, relation.id_food)
 
@@ -41,11 +41,11 @@ class BrandFoodService:
 
         relation = BrandFoodModel.find_by_id(brand_id, food_id)
         if not relation:
-            return {"message": "Marca e produto não cadastrado"}, 404
+            raise Exception({"statusCode": 404, "message": "Marca e produto não cadastrado"})
 
         chemicals = BrandFoodChemicalModel.find_by_brand_food(brand_id, food_id)
         if len(chemicals.all()) == 0:
-            return {"message": "Não existe quimicos para alimento {} da marca {}".format(brand_id, food_id)}, 404
+            raise Exception({"statusCode": 404, "message": "Não existe quimicos para alimento {} da marca {}".format(brand_id, food_id)})
 
         chemical_list = [chemical.chemical_name() for chemical in chemicals]
 
@@ -61,14 +61,14 @@ class BrandFoodService:
     def create(brand_id, food_id, bar_code, chemicals):
 
         if not chemicals or len(chemicals) == 0:
-            return {"statusCode": 400, "message": "Quimicos não informados"}
+            raise Exception({"statusCode": 400, "message": "Quimicos não informados"})
 
         if not barcodenumber.check_code_ean13(bar_code):
-            return {"statusCode": 412, "message": "Codigo de barras invalido"}
+            raise Exception({"statusCode": 412, "message": "Codigo de barras invalido"})
 
         relation = BrandFoodModel.find_by_bar_code(bar_code)
         if relation:
-            return {"statusCode": 409, "message": "Codigo de barras já cadastrado"}
+            raise Exception({"statusCode": 409, "message": "Codigo de barras já cadastrado"})
 
         relation = BrandFoodModel(brand_id, food_id, bar_code)
         try:
@@ -81,11 +81,11 @@ class BrandFoodService:
 
         except IntegrityError:
             db.session.rollback()
-            return {"statusCode": 409, "message": "Item já cadastrado"}
+            raise Exception({"statusCode": 409, "message": "Item já cadastrado"})
         except Exception as e:
             db.session.rollback()
             logger.error(e, exc_info=True)
-            return {"statusCode": 500, "message": "Error ao salvar relacionamento"}
+            raise Exception({"statusCode": 500, "message": "Error ao salvar relacionamento"})
         return relation.json()
 
     @staticmethod
@@ -93,10 +93,10 @@ class BrandFoodService:
         try:
             relation = BrandFoodModel.find_by_id(brand_id, food_id)
             if not relation:
-                return {"statusCode": 404, "message": "Relacionamento não cadastrado"}
+                raise Exception({"statusCode": 404, "message": "Relacionamento não cadastrado"})
 
             relation.delete()
         except Exception as e:
             logger.error(e, exc_info=True)
-            return {"statusCode": 500, "message": "Error ao remover relacionamento"}
+            raise Exception({"statusCode": 500, "message": "Error ao remover relacionamento"})
         return {}
