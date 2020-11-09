@@ -31,7 +31,7 @@ def lambda_handler(event, context):
         bar_code = event['bar_code']
         return brand_food_bar_code(bar_code)
     elif route == '/brands/<int:brand_id>/foods/<int:food_id>':
-        bar_code = event['bar_code']
+        bar_code = event['bar-code']
         food_id = event['food_id']
         brand_id = event['brand_id']
         _chemicals = event['chemicals']
