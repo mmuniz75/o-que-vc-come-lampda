@@ -40,7 +40,7 @@ def lambda_handler(event, context):
 
 def foods(name):
     if name is None:
-        return convert_json(FoodService.get_foods())
+        return FoodService.get_foods()
     else:
         return convert_json(FoodService.create_food(name))
 
